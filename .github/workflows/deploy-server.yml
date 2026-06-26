@@ -1,6 +1,13 @@
 name: Deploy Server
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - "server/**"
+      - "deploy/**"
+      - ".github/workflows/deploy-server.yml"
   workflow_dispatch:
     inputs:
       pm2_name:
@@ -14,7 +21,7 @@ on:
 
 jobs:
   deploy:
-    if: ${{ github.event.inputs.confirm == 'DEPLOY' }}
+    if: ${{ github.event_name == 'push' || github.event.inputs.confirm == 'DEPLOY' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -53,12 +60,13 @@ jobs:
           SSH_HOST: ${{ secrets.SGCC_DEPLOY_HOST }}
           SSH_USER: ${{ secrets.SGCC_DEPLOY_USER }}
           REMOTE_DIR: /var/www/sgcc-exam-miniapp/server
-          PM2_NAME: ${{ github.event.inputs.pm2_name }}
+          PM2_NAME: ${{ github.event.inputs.pm2_name || 'sgcc-exam-api' }}
         run: |
           STAMP="$(date +%Y%m%d%H%M%S)"
           ssh "$SSH_USER@$SSH_HOST" "pm2 describe '$PM2_NAME' | grep -q 'exec cwd.*$REMOTE_DIR'"
           ssh "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR' && cd '$REMOTE_DIR' && [ -f server.js ] && cp server.js server.js.bak_$STAMP || true"
           scp server/server.js "$SSH_USER@$SSH_HOST:$REMOTE_DIR/server.js"
+          scp server/wechat-pay.js "$SSH_USER@$SSH_HOST:$REMOTE_DIR/wechat-pay.js"
           scp server/package.json "$SSH_USER@$SSH_HOST:$REMOTE_DIR/package.json"
           scp server/package-lock.json "$SSH_USER@$SSH_HOST:$REMOTE_DIR/package-lock.json"
           ssh "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR/scripts'"

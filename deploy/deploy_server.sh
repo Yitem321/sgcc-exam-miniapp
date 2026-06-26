@@ -20,6 +20,7 @@ ssh "${USER}@${HOST}" "pm2 describe '${PM2_NAME}' | grep -q 'exec cwd.*${REMOTE_
 ssh "${USER}@${HOST}" "mkdir -p '${REMOTE_DIR}' && cd '${REMOTE_DIR}' && [ -f server.js ] && cp server.js server.js.bak_${STAMP} || true && [ -f .env ] && cp .env .env.bak_${STAMP} || true"
 
 scp "${LOCAL_SERVER_DIR}/server.js" "${USER}@${HOST}:${REMOTE_DIR}/server.js"
+scp "${LOCAL_SERVER_DIR}/wechat-pay.js" "${USER}@${HOST}:${REMOTE_DIR}/wechat-pay.js"
 scp "${LOCAL_SERVER_DIR}/package.json" "${USER}@${HOST}:${REMOTE_DIR}/package.json"
 scp "${LOCAL_SERVER_DIR}/package-lock.json" "${USER}@${HOST}:${REMOTE_DIR}/package-lock.json"
 ssh "${USER}@${HOST}" "mkdir -p '${REMOTE_DIR}/scripts'"
