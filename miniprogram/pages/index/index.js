@@ -43,6 +43,10 @@ Page({
   },
 
   async onLoad() {
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ["shareAppMessage", "shareTimeline"]
+    });
     await this.loadCatalog();
   },
 
@@ -289,5 +293,19 @@ Page({
   goInfo(event) {
     const page = event.currentTarget.dataset.page;
     if (page) wx.navigateTo({ url: "/pages/" + page + "/" + page });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: "电力考试刷题，免费练习巩固薄弱题型",
+      path: "/pages/index/index"
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: "电力考试刷题，免费练习巩固薄弱题型",
+      query: ""
+    };
   }
 });

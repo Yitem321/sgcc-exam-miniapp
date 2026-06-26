@@ -65,6 +65,10 @@ Page({
   },
 
   async onLoad(query) {
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ["shareAppMessage", "shareTimeline"]
+    });
     learningState.migrateLegacyRecords();
     await this.loadQuestions(query || {});
   },
@@ -493,6 +497,20 @@ Page({
 
   openPayPanel() {
     this.contactSupport("题目解析");
+  },
+
+  onShareAppMessage() {
+    return {
+      title: "电力考试刷题，免费练习巩固薄弱题型",
+      path: "/pages/index/index"
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: "电力考试刷题，免费练习巩固薄弱题型",
+      query: ""
+    };
   }
 });
 
