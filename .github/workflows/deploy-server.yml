@@ -1,0 +1,73 @@
+name: Deploy Server
+
+on:
+  workflow_dispatch:
+    inputs:
+      pm2_name:
+        description: "PM2 process name"
+        required: true
+        default: "sgcc-exam-api"
+      confirm:
+        description: "Type DEPLOY to run"
+        required: true
+        default: "DRY_RUN"
+
+jobs:
+  deploy:
+    if: ${{ github.event.inputs.confirm == 'DEPLOY' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: server/package-lock.json
+
+      - name: Validate server package
+        working-directory: server
+        run: |
+          npm ci
+          node --check server.js
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SGCC_DEPLOY_SSH_KEY }}
+          SSH_HOST: ${{ secrets.SGCC_DEPLOY_HOST }}
+          SSH_USER: ${{ secrets.SGCC_DEPLOY_USER }}
+        run: |
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_HOST"
+          test -n "$SSH_USER"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy server files
+        env:
+          SSH_HOST: ${{ secrets.SGCC_DEPLOY_HOST }}
+          SSH_USER: ${{ secrets.SGCC_DEPLOY_USER }}
+          REMOTE_DIR: /var/www/sgcc-exam-miniapp/server
+          PM2_NAME: ${{ github.event.inputs.pm2_name }}
+        run: |
+          STAMP="$(date +%Y%m%d%H%M%S)"
+          ssh "$SSH_USER@$SSH_HOST" "pm2 describe '$PM2_NAME' | grep -q 'exec cwd.*$REMOTE_DIR'"
+          ssh "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR' && cd '$REMOTE_DIR' && [ -f server.js ] && cp server.js server.js.bak_$STAMP || true"
+          scp server/server.js "$SSH_USER@$SSH_HOST:$REMOTE_DIR/server.js"
+          scp server/package.json "$SSH_USER@$SSH_HOST:$REMOTE_DIR/package.json"
+          scp server/package-lock.json "$SSH_USER@$SSH_HOST:$REMOTE_DIR/package-lock.json"
+          ssh "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR/scripts'"
+          scp server/scripts/health-check.js "$SSH_USER@$SSH_HOST:$REMOTE_DIR/scripts/health-check.js"
+          ssh "$SSH_USER@$SSH_HOST" "cd '$REMOTE_DIR' && npm install && pm2 restart '$PM2_NAME' --update-env && pm2 status"
+
+      - name: Public health checks
+        run: |
+          cd server
+          API_BASE_URL=https://api.synexa.cc npm run check:health
+          curl -fsS https://api.synexa.cc/api/ai/status
+          echo

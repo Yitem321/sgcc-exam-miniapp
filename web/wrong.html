@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>错题本</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body data-list-type="wrong">
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>错题本</h1>
+          <span>本地保存答错题目，可按题组重新练习</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="favorites.html">收藏</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <div id="loadNotice" class="notice">正在读取错题本...</div>
+
+      <section class="panel section">
+        <div class="section-title">
+          <h2>错题列表</h2>
+          <strong id="itemCount">0</strong>
+        </div>
+        <div id="groupActions" class="toolbar"></div>
+        <div id="questionList" class="question-list"></div>
+      </section>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ai-explanations-data.js"></script>
+    <script src="js/ai-explain.js"></script>
+    <script src="js/review-list.js"></script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+<view class="page info-page">
+  <view class="card">
+    <view class="section-title">使用说明</view>
+    <view class="paragraph">1. 在首页选择专业和等级后，可查看当前题库统计。</view>
+    <view class="paragraph">2. 点击单选题、多选题或判断题统计卡，可直接进入对应题型练习。</view>
+    <view class="paragraph">3. 顺序刷题按当前题库顺序练习，随机练习会打乱题目顺序。</view>
+    <view class="paragraph">4. 答错的题目会自动加入错题本，也可以手动加入或移出错题本。</view>
+    <view class="paragraph">5. 收藏题目可在收藏入口集中练习。</view>
+    <view class="paragraph">6. 模拟考试可设置题型数量和考试时长，提交后查看成绩与明细。</view>
+  </view>
+</view>

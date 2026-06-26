@@ -1,0 +1,19 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+
+.report-line {
+  display: grid;
+  grid-template-columns: 130rpx 1fr 72rpx;
+  align-items: center;
+  gap: 18rpx;
+  padding: 18rpx 0;
+  color: #475467;
+  font-size: 24rpx;
+}
+
+.stats-actions {
+  margin-top: 24rpx;
+}

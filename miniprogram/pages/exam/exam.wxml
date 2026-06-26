@@ -1,0 +1,119 @@
+<view class="page with-bottom-bar">
+  <block wx:if="{{!started}}">
+    <view class="exam-hero">
+      <view class="title">模拟考试</view>
+      <view class="subtle">按题型随机抽题，提交后立即显示成绩</view>
+      <view class="exam-dataset">{{datasetTitle}}</view>
+    </view>
+    <view class="card">
+      <view class="section-title">组卷设置</view>
+      <view class="form-row">
+        <view>
+          <view>单选题数量</view>
+          <view class="form-hint">共 {{availableSingle}} 题可抽</view>
+        </view>
+        <view class="stepper">
+          <button data-key="singleCount" data-delta="-1" bindtap="changeSetting">-</button>
+          <input type="number" value="{{singleCount}}" data-key="singleCount" bindinput="onInput" />
+          <button data-key="singleCount" data-delta="1" bindtap="changeSetting">+</button>
+        </view>
+      </view>
+      <view class="form-row">
+        <view>
+          <view>多选题数量</view>
+          <view class="form-hint">共 {{availableMultiple}} 题可抽</view>
+        </view>
+        <view class="stepper">
+          <button data-key="multipleCount" data-delta="-1" bindtap="changeSetting">-</button>
+          <input type="number" value="{{multipleCount}}" data-key="multipleCount" bindinput="onInput" />
+          <button data-key="multipleCount" data-delta="1" bindtap="changeSetting">+</button>
+        </view>
+      </view>
+      <view class="form-row">
+        <view>
+          <view>判断题数量</view>
+          <view class="form-hint">共 {{availableJudge}} 题可抽</view>
+        </view>
+        <view class="stepper">
+          <button data-key="judgeCount" data-delta="-1" bindtap="changeSetting">-</button>
+          <input type="number" value="{{judgeCount}}" data-key="judgeCount" bindinput="onInput" />
+          <button data-key="judgeCount" data-delta="1" bindtap="changeSetting">+</button>
+        </view>
+      </view>
+      <view class="form-row">
+        <view>
+          <view>考试时间</view>
+          <view class="form-hint">单位：分钟</view>
+        </view>
+        <view class="stepper">
+          <button data-key="minutes" data-delta="-5" bindtap="changeSetting">-</button>
+          <input type="number" value="{{minutes}}" data-key="minutes" bindinput="onInput" />
+          <button data-key="minutes" data-delta="5" bindtap="changeSetting">+</button>
+        </view>
+      </view>
+    </view>
+    <button class="primary" bindtap="startExam">开始考试</button>
+  </block>
+
+  <block wx:else>
+    <view class="exam-top">
+      <view class="row">
+        <text class="tag">{{current.question_type}}</text>
+        <text class="timer">{{timerText}}</text>
+      </view>
+      <view class="question-title">第 {{currentIndex + 1}} / {{paper.length}} 题</view>
+      <view class="question-text">{{current.question}}</view>
+    </view>
+
+    <view class="card option-card">
+      <view class="option" wx:for="{{optionList}}" wx:key="key" data-key="{{item.key}}" bindtap="onOptionTap">
+        <view class="option-indicator {{item.checked ? 'option-indicator-active' : ''}}">
+          <text wx:if="{{item.checked}}" class="option-indicator-check">✓</text>
+        </view>
+        <view class="option-body"><text class="option-key">{{item.key}}</text><text>{{item.text}}</text></view>
+      </view>
+    </view>
+
+    <view class="exam-actions">
+      <button class="secondary" bindtap="prevQuestion">上一题</button>
+      <button class="secondary" bindtap="nextQuestion">下一题</button>
+    </view>
+
+    <view class="bottom-bar exam-submit-bar">
+      <button class="secondary status-button" bindtap="openQuestionNavigator">答题状态</button>
+      <button class="primary submit" bindtap="submitExam">提交试卷</button>
+    </view>
+
+    <view wx:if="{{navigatorVisible}}" class="nav-mask" catchtap="closeQuestionNavigator">
+      <view class="nav-panel" catchtap="noop">
+        <view class="nav-header">
+          <view>
+            <view class="nav-title">答题状态</view>
+            <view class="nav-subtitle">实心为已作答，空心为未作答</view>
+          </view>
+          <button class="nav-close" bindtap="closeQuestionNavigator">关闭</button>
+        </view>
+        <scroll-view class="nav-scroll" scroll-y>
+          <view class="nav-section" wx:for="{{navigatorSections}}" wx:key="title">
+            <view class="nav-section-head">
+              <text>{{item.title}}</text>
+              <text>{{item.doneCount}} / {{item.totalCount}}</text>
+            </view>
+            <view class="nav-grid">
+              <view
+                class="nav-item {{nav.done ? 'nav-item-done' : 'nav-item-empty'}} {{nav.isCurrent ? 'nav-item-current' : ''}}"
+                wx:for="{{item.items}}"
+                wx:for-item="nav"
+                wx:key="id"
+                data-index="{{nav.index}}"
+                bindtap="jumpToQuestion"
+              >
+                {{nav.no}}
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </block>
+</view>

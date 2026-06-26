@@ -1,0 +1,9 @@
+<view class="page info-page">
+  <view class="card">
+    <view class="section-title">用户协议</view>
+    <view class="paragraph">用户可使用本应用进行职业技能考试练习、模拟考试、错题复习和收藏管理。</view>
+    <view class="paragraph">本应用提供的题库和练习结果仅用于学习备考参考，不作为考试通过承诺或官方成绩依据。</view>
+    <view class="paragraph">用户应合理使用本应用，不得利用本应用从事违法违规行为。</view>
+    <view class="paragraph">本应用将根据实际功能向用户提供服务，具体功能以页面展示为准。</view>
+  </view>
+</view>

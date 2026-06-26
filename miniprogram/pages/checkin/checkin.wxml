@@ -1,0 +1,95 @@
+<view class="page">
+  <view class="page-head">
+    <view>
+      <view class="page-title">学习打卡</view>
+      <view class="subtle">完成每日刷题目标后即可打卡</view>
+    </view>
+    <view class="pill">连续 {{summary.streakDays || 0}} 天</view>
+  </view>
+
+  <view class="checkin-hero">
+    <view class="hero-row">
+      <view>
+        <view class="hero-kicker">今日目标</view>
+        <view class="hero-title">{{summary.todayDone || 0}} / {{summary.goal.target || 20}} 题</view>
+      </view>
+      <view class="hero-badge">{{summary.checkedToday ? '已完成' : '进行中'}}</view>
+    </view>
+    <view class="hero-subtitle">{{summary.checkedToday ? '今日已完成打卡' : '达到目标后可完成今日打卡'}}</view>
+    <view class="hero-progress-wrap">
+      <view class="progress-track hero-progress">
+        <view class="progress-fill" style="width: {{summary.todayDone * 100 / summary.goal.target}}%;"></view>
+      </view>
+    </view>
+    <button class="primary hero-button" bindtap="checkIn" disabled="{{!summary.canCheckIn && !summary.checkedToday}}">{{summary.checkedToday ? '今日已打卡' : '完成打卡'}}</button>
+  </view>
+
+  <view class="card goal-card">
+    <view class="goal-card-head">
+      <view>
+        <view class="section-title">每日目标</view>
+        <view class="goal-hint">{{goalLockText}}</view>
+      </view>
+      <view class="goal-status {{summary.goal.canEdit ? 'goal-status-open' : 'goal-status-locked'}}">
+        {{summary.goal.canEdit ? '可调整' : '已锁定'}}
+      </view>
+    </view>
+
+    <view class="goal-metrics">
+      <view>
+        <view class="goal-number">{{summary.goal.target || 20}}</view>
+        <view class="goal-label">当前目标</view>
+      </view>
+      <view>
+        <view class="goal-number">{{goalRemaining}}</view>
+        <view class="goal-label">还差题数</view>
+      </view>
+      <view>
+        <view class="goal-number">{{goalProgress}}%</view>
+        <view class="goal-label">完成进度</view>
+      </view>
+    </view>
+
+    <view class="goal-progress-card">
+      <view class="progress-track goal-progress">
+        <view class="progress-fill" style="width: {{goalProgress}}%;"></view>
+      </view>
+      <view class="goal-progress-copy">今日已刷 {{summary.todayDone || 0}} / {{summary.goal.target || 20}} 题</view>
+    </view>
+
+    <view class="goal-editor {{summary.goal.canEdit ? '' : 'goal-editor-disabled'}}">
+      <view class="goal-input-wrap">
+        <text>目标</text>
+        <input type="number" value="{{goalInput}}" bindinput="onGoalInput" disabled="{{!summary.goal.canEdit}}" />
+        <text>题/天</text>
+      </view>
+      <view class="goal-preset-row">
+        <view
+          wx:for="{{goalPresets}}"
+          wx:key="*this"
+          class="goal-preset {{goalInput === item ? 'goal-preset-active' : ''}}"
+          data-value="{{item}}"
+          bindtap="selectGoalPreset"
+        >
+          {{item}}题
+        </view>
+      </view>
+      <button class="primary goal-save-button" bindtap="saveGoal" disabled="{{!summary.goal.canEdit}}">保存目标</button>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-head">
+      <view class="section-title">{{month}}月打卡</view>
+      <view class="pill">累计 {{summary.totalCheckins || 0}} 天</view>
+    </view>
+    <view class="calendar-week">
+      <text wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="calendar-grid">
+      <view wx:for="{{days}}" wx:key="key" class="calendar-day {{item.empty ? 'calendar-empty' : ''}} {{item.checked ? 'calendar-checked' : ''}} {{item.today ? 'calendar-today' : ''}}">
+        <text>{{item.day}}</text>
+      </view>
+    </view>
+  </view>
+</view>

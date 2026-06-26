@@ -1,0 +1,13 @@
+.profile-card {
+  border-left: 6rpx solid #00A86B;
+}
+
+.profile-button {
+  margin-top: 24rpx;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}

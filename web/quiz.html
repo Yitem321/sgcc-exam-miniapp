@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>刷题</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>刷题</h1>
+          <span id="quizScope">请选择题库</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="wrong.html">错题本</a>
+          <a href="favorites.html">收藏</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <div id="loadNotice" class="notice">正在加载题目...</div>
+
+      <div class="quiz-layout">
+        <article class="panel quiz-card">
+          <div class="question-meta">
+            <span id="questionNumber" class="tag">题号 -</span>
+            <span id="questionType" class="tag">题型 -</span>
+            <span id="questionLevel" class="tag">等级 -</span>
+          </div>
+
+          <h2 id="questionText" class="question-title"></h2>
+          <form id="answerForm">
+            <div id="options" class="options"></div>
+            <div class="toolbar">
+              <button id="submitButton" class="primary" type="submit">提交</button>
+              <button id="prevButton" type="button">上一题</button>
+              <button id="nextButton" type="button">下一题</button>
+              <button id="homeButton" type="button">返回首页</button>
+              <button id="favoriteButton" type="button">收藏</button>
+              <button id="wrongButton" type="button">加入错题本</button>
+              <button id="aiExplainButton" type="button">AI解析</button>
+            </div>
+          </form>
+
+          <section id="answerBox" class="answer-box" aria-live="polite">
+            <p><strong id="resultText"></strong></p>
+            <p>正确答案：<span id="correctAnswer"></span></p>
+            <p>解析：<span id="analysisText"></span></p>
+          </section>
+          <section id="aiExplainBox" class="ai-explain-box" aria-live="polite"></section>
+        </article>
+
+        <aside class="panel side-panel">
+          <h2>进度</h2>
+          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+          <div class="summary-list">
+            <div class="summary-row"><span>本组题数</span><strong id="scopeCount">0</strong></div>
+            <div class="summary-row"><span>已做题数</span><strong id="doneCount">0</strong></div>
+            <div class="summary-row"><span>正确率</span><strong id="accuracy">0%</strong></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ai-explanations-data.js"></script>
+    <script src="js/ai-explain.js"></script>
+    <script src="js/quiz.js"></script>
+  </body>
+</html>

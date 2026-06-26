@@ -1,0 +1,75 @@
+<view class="page">
+  <view class="card wrong-hero">
+    <view>
+      <view class="title">错题强化</view>
+      <view class="subtle">共 {{summary.totalWrong}} 题，持续复习可稳步提升掌握度</view>
+    </view>
+    <button class="primary hero-button" wx:if="{{list.length}}" bindtap="practice">开始复习</button>
+  </view>
+
+  <view class="card smart-card">
+    <view class="section-title-row">
+      <view class="section-title">错题强化</view>
+      <view class="help-icon" bindtap="showReviewHelp">?</view>
+    </view>
+    <view class="smart-grid">
+      <view class="smart-item">
+        <view class="smart-value">{{summary.dueToday}}</view>
+        <view class="smart-label">今日待复习</view>
+      </view>
+      <view class="smart-item risk">
+        <view class="smart-value">{{summary.highRisk}}</view>
+        <view class="smart-label">高风险遗忘</view>
+      </view>
+      <view class="smart-item almost">
+        <view class="smart-value">{{summary.almostMastered}}</view>
+        <view class="smart-label">即将掌握</view>
+      </view>
+    </view>
+    <view class="row-subtitle" style="margin-top: 18rpx;">错题强化已免费开放，可直接筛选并开始复习。</view>
+  </view>
+
+  <view class="review-help-row" bindtap="showReviewHelp">
+    <text>复习分类说明</text>
+    <view class="help-icon">?</view>
+  </view>
+
+  <view class="legend-card">
+    <view class="legend-item"><text class="dot dot-red"></text><text>最近答错</text></view>
+    <view class="legend-item"><text class="dot dot-yellow"></text><text>待巩固</text></view>
+    <view class="legend-item"><text class="dot dot-green"></text><text>已掌握</text></view>
+    <view class="legend-item"><text class="dot dot-empty"></text><text>未做</text></view>
+  </view>
+
+  <scroll-view class="filter-scroll" scroll-x>
+    <view class="filter-row">
+      <view
+        wx:for="{{filters}}"
+        wx:key="key"
+        class="filter-chip {{activeFilter === item.key ? 'filter-chip-active' : ''}}"
+        data-filter="{{item.key}}"
+        bindtap="selectFilter"
+      >
+        {{item.label}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="card empty" wx:if="{{!list.length && !loading}}">暂无错题</view>
+
+  <view class="card item-card" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="practiceOne">
+    <view class="row">
+      <text class="tag">{{item.question_type}}</text>
+      <text class="status-pill {{item.statusClass}}">{{item.statusText}}</text>
+    </view>
+    <view class="question">{{index + 1}}. {{item.question}}</view>
+    <view class="state-row">
+      <text>错 {{item.wrongCount}} 次</text>
+      <text>连续正确 {{item.consecutiveCorrect}} 次</text>
+      <text>掌握度 {{item.masteryScore}}</text>
+    </view>
+    <view class="mastery-track">
+      <view class="mastery-fill {{item.statusClass}}" style="width: {{item.masteryScore}}%;"></view>
+    </view>
+  </view>
+</view>

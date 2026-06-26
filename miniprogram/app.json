@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/major/major",
+    "pages/quiz/quiz",
+    "pages/wrong/wrong",
+    "pages/favorites/favorites",
+    "pages/exam/exam",
+    "pages/result/result",
+    "pages/checkin/checkin",
+    "pages/stats/stats",
+    "pages/member/member",
+    "pages/mine/mine",
+    "pages/guide/guide",
+    "pages/about/about",
+    "pages/privacy/privacy",
+    "pages/agreement/agreement"
+  ],
+  "window": {
+    "navigationBarTitleText": "电力考试刷题",
+    "navigationBarBackgroundColor": "#00A86B",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5F7FA"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

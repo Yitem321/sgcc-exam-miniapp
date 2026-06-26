@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="page-head">
+    <view>
+      <view class="page-title">学习统计</view>
+      <view class="subtle">正确率、掌握度和练习记录</view>
+    </view>
+    <view class="pill">{{studyDays}} 天</view>
+  </view>
+
+  <view class="card">
+    <view class="stats-grid">
+      <view class="metric">
+        <text class="metric-value">{{total}}</text>
+        <text class="metric-label">累计刷题</text>
+      </view>
+      <view class="metric">
+        <text class="metric-value">{{accuracy}}%</text>
+        <text class="metric-label">正确率</text>
+      </view>
+      <view class="metric">
+        <text class="metric-value">{{wrongCount}}</text>
+        <text class="metric-label">错题</text>
+      </view>
+      <view class="metric">
+        <text class="metric-value">{{favoriteCount}}</text>
+        <text class="metric-label">收藏</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">题型掌握度</view>
+    <view wx:if="{{!typeStats.length}}" class="empty">开始刷题后生成学习报告</view>
+    <view wx:for="{{typeStats}}" wx:key="type" class="report-line">
+      <text>{{item.type}}</text>
+      <view class="progress-track"><view class="progress-fill" style="width: {{item.rate}}%;"></view></view>
+      <text>{{item.rate}}%</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">提分建议</view>
+    <view class="row-subtitle">正确率低于 70% 时，建议优先刷错题本；正确率超过 80% 后进入模拟考试。</view>
+    <view class="button-grid stats-actions">
+      <button class="secondary" bindtap="goWrong">错题强化</button>
+      <button class="primary" bindtap="goQuiz">继续刷题</button>
+    </view>
+  </view>
+</view>

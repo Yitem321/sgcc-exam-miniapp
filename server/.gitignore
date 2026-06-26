@@ -1,0 +1,14 @@
+.env
+.env.local
+node_modules/
+certs/
+*.pem
+*.key
+*.p12
+*.crt
+*.cer
+*.zip
+*.tar.gz
+*.log
+*.bak
+*.bak_*

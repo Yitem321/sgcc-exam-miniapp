@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI状态</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>AI服务状态</h1>
+          <span>本地 AI 解析服务配置与调用统计</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="wrong.html">错题本</a>
+          <a href="favorites.html">收藏</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <div id="loadNotice" class="notice">正在读取 AI 服务状态...</div>
+
+      <section class="stats-grid">
+        <div class="panel stat-card"><span>AI服务状态</span><strong id="serviceStatus">-</strong></div>
+        <div class="panel stat-card"><span>缓存数量</span><strong id="cacheTotal">0</strong></div>
+        <div class="panel stat-card"><span>当前Provider</span><strong id="currentProvider">-</strong></div>
+        <div class="panel stat-card"><span>DeepSeek是否配置</span><strong id="deepseekConfigured">-</strong></div>
+        <div class="panel stat-card"><span>OpenAI是否配置</span><strong id="openaiConfigured">-</strong></div>
+        <div class="panel stat-card"><span>缓存命中次数</span><strong id="cacheHits">0</strong></div>
+        <div class="panel stat-card"><span>DeepSeek调用次数</span><strong id="deepseekCalls">0</strong></div>
+        <div class="panel stat-card"><span>OpenAI调用次数</span><strong id="openaiCalls">0</strong></div>
+        <div class="panel stat-card"><span>Mock调用次数</span><strong id="mockCalls">0</strong></div>
+      </section>
+
+      <section class="panel section">
+        <div class="section-title">
+          <h2>连接测试</h2>
+          <button id="refreshStatusButton" type="button">刷新状态</button>
+        </div>
+        <div class="toolbar">
+          <button id="testDeepSeekButton" class="primary" type="button">测试DeepSeek</button>
+          <button id="testOpenAIButton" type="button">测试OpenAI</button>
+          <button id="testCacheButton" type="button">测试缓存</button>
+        </div>
+        <div id="testResult" class="ai-status-result muted" aria-live="polite">点击按钮后查看测试结果。</div>
+      </section>
+    </main>
+
+    <script src="js/ai-status.js"></script>
+  </body>
+</html>

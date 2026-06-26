@@ -1,0 +1,46 @@
+.score {
+  color: #00A86B;
+  font-size: 72rpx;
+  font-weight: 800;
+  margin: 20rpx 0;
+}
+
+.detail {
+  padding: 22rpx 0;
+  border-bottom: 1rpx solid #eef2f7;
+}
+
+.detail:active {
+  opacity: 0.72;
+}
+
+.detail:last-child {
+  border-bottom: 0;
+}
+
+.detail-status {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.detail-link {
+  color: #07865A;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.question {
+  line-height: 1.6;
+  margin: 12rpx 0;
+}
+
+.right {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.wrong {
+  color: #dc2626;
+  font-weight: 700;
+}

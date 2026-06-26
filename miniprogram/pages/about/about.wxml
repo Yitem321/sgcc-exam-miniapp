@@ -1,0 +1,9 @@
+<view class="page info-page">
+  <view class="card">
+    <view class="section-title">关于我们</view>
+    <view class="paragraph">电力考试刷题是一款面向职业技能考试备考的题库练习工具。</view>
+    <view class="paragraph">当前版本提供题库选择、题型练习、顺序刷题、随机练习、模拟考试、错题本、收藏题目、学习打卡和学习报告功能。</view>
+    <view class="paragraph">题目数据由题库服务器按专业和等级提供，小程序仅在用户使用相关功能时请求题目、统计和题库目录数据。</view>
+    <view class="paragraph">当前版本不包含广告、会员、支付功能；微信登录仅用于用户主动保存和同步学习记录。</view>
+  </view>
+</view>

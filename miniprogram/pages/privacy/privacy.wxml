@@ -1,0 +1,10 @@
+<view class="page info-page">
+  <view class="card">
+    <view class="section-title">隐私说明</view>
+    <view class="paragraph">本应用核心刷题功能无需登录即可使用，不收集姓名、手机号、身份证号等个人身份信息。</view>
+    <view class="paragraph">如用户主动使用微信登录，本应用仅用于识别当前用户，以保存和同步学习记录、错题记录、收藏记录和学习打卡进度。</view>
+    <view class="paragraph">本应用会向题库服务器请求题库目录、题目列表、题库统计和题目解析数据，用于提供刷题、模拟考试和解析体验功能。</view>
+    <view class="paragraph">未登录时，答题记录、错题、收藏和考试结果保存在用户本机微信小程序本地存储中；登录后可同步到服务器。</view>
+    <view class="paragraph">当前版本不接入广告、支付或第三方数据统计服务。</view>
+  </view>
+</view>

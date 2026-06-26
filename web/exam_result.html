@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>模拟考试结果</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell" id="resultContent">
+      <header class="topbar">
+        <div class="brand">
+          <h1>模拟考试结果</h1>
+          <span>本次考试明细与错题处理结果</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="exam_config.html">再次考试</a>
+          <a href="wrong.html">错题本</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <section class="stats-grid">
+        <div class="panel stat-card"><span>专业</span><strong id="majorText">-</strong></div>
+        <div class="panel stat-card"><span>等级</span><strong id="levelText">-</strong></div>
+        <div class="panel stat-card"><span>考试时间</span><strong id="durationText">-</strong></div>
+        <div class="panel stat-card"><span>实际用时</span><strong id="usedTimeText">-</strong></div>
+        <div class="panel stat-card"><span>总题数</span><strong id="totalText">0</strong></div>
+        <div class="panel stat-card"><span>答对题数</span><strong id="correctText">0</strong></div>
+        <div class="panel stat-card"><span>答错题数</span><strong id="wrongText">0</strong></div>
+        <div class="panel stat-card"><span>未答题数</span><strong id="unansweredText">0</strong></div>
+        <div class="panel stat-card"><span>正确率</span><strong id="accuracyText">0%</strong></div>
+        <div class="panel stat-card"><span>单选题正确率</span><strong id="singleAccuracy">0%</strong></div>
+        <div class="panel stat-card"><span>多选题正确率</span><strong id="multiAccuracy">0%</strong></div>
+        <div class="panel stat-card"><span>判断题正确率</span><strong id="judgeAccuracy">0%</strong></div>
+      </section>
+
+      <section class="panel section">
+        <div class="section-title">
+          <h2>结果详情</h2>
+        </div>
+        <div id="resultList" class="question-list"></div>
+      </section>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/exam-common.js"></script>
+    <script src="js/ai-explanations-data.js"></script>
+    <script src="js/ai-explain.js"></script>
+    <script src="js/exam-result.js"></script>
+  </body>
+</html>

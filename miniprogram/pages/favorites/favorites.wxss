@@ -1,0 +1,9 @@
+.item-card {
+  margin-top: 20rpx;
+}
+
+.question {
+  margin-top: 14rpx;
+  line-height: 1.6;
+  font-weight: 600;
+}

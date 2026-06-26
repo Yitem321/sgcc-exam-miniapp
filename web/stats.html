@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>统计</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>统计</h1>
+          <span>基于本机 localStorage</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="wrong.html">错题本</a>
+          <a href="favorites.html">收藏</a>
+          <a href="quiz.html">刷题</a>
+        </nav>
+      </header>
+
+      <div id="loadNotice" class="notice">正在读取统计...</div>
+
+      <section class="stats-grid">
+        <div class="panel stat-card"><span>总题数</span><strong id="totalQuestions">0</strong></div>
+        <div class="panel stat-card"><span>已做题数</span><strong id="doneQuestions">0</strong></div>
+        <div class="panel stat-card"><span>正确数</span><strong id="correctQuestions">0</strong></div>
+        <div class="panel stat-card"><span>错误数</span><strong id="incorrectQuestions">0</strong></div>
+        <div class="panel stat-card"><span>正确率</span><strong id="accuracy">0%</strong></div>
+        <div class="panel stat-card"><span>错题数量</span><strong id="wrongQuestions">0</strong></div>
+        <div class="panel stat-card"><span>收藏数量</span><strong id="favoriteQuestions">0</strong></div>
+        <div class="panel stat-card"><span>模拟考试次数</span><strong id="examCount">0</strong></div>
+        <div class="panel stat-card"><span>最近一次考试正确率</span><strong id="lastExamAccuracy">0%</strong></div>
+        <div class="panel stat-card"><span>历史最高正确率</span><strong id="bestExamAccuracy">0%</strong></div>
+        <div class="panel stat-card"><span>平均正确率</span><strong id="avgExamAccuracy">0%</strong></div>
+        <div class="panel stat-card"><span>最近一次考试用时</span><strong id="lastExamTime">0分00秒</strong></div>
+        <div class="panel stat-card"><span>已缓存解析数</span><strong id="aiCacheTotal">0</strong></div>
+        <div class="panel stat-card"><span>DeepSeek解析数</span><strong id="aiCacheDeepSeek">0</strong></div>
+        <div class="panel stat-card"><span>OpenAI解析数</span><strong id="aiCacheOpenAI">0</strong></div>
+        <div class="panel stat-card"><span>Mock解析数</span><strong id="aiCacheMock">0</strong></div>
+        <div class="panel stat-card"><span>免费解析已用次数</span><strong id="analysisFreeUsed">0</strong></div>
+        <div class="panel stat-card"><span>已查看解析题数</span><strong id="analysisViewedCount">0</strong></div>
+        <div class="panel stat-card"><span>是否VIP</span><strong id="analysisVipStatus">否</strong></div>
+        <div class="panel stat-card"><span>本地解析库总数</span><strong id="localAnalysisTotal">0</strong></div>
+      </section>
+
+      <section class="grouped-stats">
+        <article class="panel section">
+          <div class="section-title">
+            <h2>AI解析缓存统计</h2>
+            <button id="clearAiCacheButton" type="button">清空AI解析缓存</button>
+          </div>
+          <div id="aiCacheNotice" class="muted">正在读取本地 AI 解析缓存...</div>
+        </article>
+        <article class="panel section">
+          <h2>按专业统计</h2>
+          <div id="majorStats" class="stats-table"></div>
+        </article>
+        <article class="panel section">
+          <h2>按等级统计</h2>
+          <div id="levelStats" class="stats-table"></div>
+        </article>
+        <article class="panel section">
+          <h2>按题型统计</h2>
+          <div id="typeStats" class="stats-table"></div>
+        </article>
+        <article class="panel section">
+          <h2>历史考试记录</h2>
+          <div id="examHistory" class="stats-table"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ai-explanations-data.js"></script>
+    <script src="js/ai-explain.js"></script>
+    <script src="js/stats.js"></script>
+  </body>
+</html>

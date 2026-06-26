@@ -1,0 +1,46 @@
+<view class="page major-page">
+  <view class="page-head">
+    <view>
+      <view class="page-title">选择专业</view>
+      <view class="subtle">65 个电力职业题库，选择后点击确认生效</view>
+    </view>
+    <view class="pill">{{filteredMajors.length}} 个</view>
+  </view>
+
+  <input class="search-input" value="{{keyword}}" placeholder="搜索专业名称，如 通信、变电、配网" bindinput="onKeywordInput" />
+
+  <view class="card current-card">
+    <view class="section-title">当前选择</view>
+    <view class="thin-row">
+      <view>
+        <view class="row-title">{{currentMajor || '未选择专业'}}</view>
+        <view class="row-subtitle">专业决定首页统计、刷题和模拟考试范围</view>
+      </view>
+    </view>
+    <view class="thin-row">
+      <view>
+        <view class="row-title">等级</view>
+        <view class="row-subtitle">{{currentLevel || '请选择等级'}}</view>
+      </view>
+      <picker range="{{levels}}" value="{{levelIndex}}" bindchange="onLevelChange">
+        <view class="pill">切换</view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">全部专业</view>
+    <view wx:if="{{!filteredMajors.length && !loading}}" class="empty">未找到相关专业</view>
+    <view wx:for="{{filteredMajors}}" wx:key="*this" class="major-row {{item === currentMajor ? 'major-row-active' : ''}}" data-major="{{item}}" bindtap="selectMajor">
+      <view>
+        <view class="row-title">{{item}}</view>
+        <view class="row-subtitle">点击选择专业，再选择等级</view>
+      </view>
+      <view wx:if="{{item === currentMajor}}" class="pill">当前</view>
+    </view>
+  </view>
+
+  <view class="confirm-bar">
+    <button class="primary confirm-button" bindtap="confirmSelection">确认并返回首页</button>
+  </view>
+</view>

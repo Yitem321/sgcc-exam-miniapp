@@ -1,0 +1,17 @@
+{
+  "name": "sgcc-exam-ai-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local AI explanation proxy for SGCC exam miniapp",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check:health": "node scripts/health-check.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "openai": "^4.78.1"
+  }
+}

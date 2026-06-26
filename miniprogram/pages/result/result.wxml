@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="card" wx:if="{{result}}">
+    <view class="title">考试成绩</view>
+    <view class="score">{{result.score}} 分</view>
+    <view class="row"><text>答对</text><text>{{result.correct}} / {{result.total}}</text></view>
+  </view>
+
+  <view class="card" wx:if="{{result}}">
+    <view class="section-title">答题明细</view>
+    <view class="detail" wx:for="{{result.details}}" wx:key="id" data-id="{{item.id}}" bindtap="goReviewQuestion">
+      <view class="row">
+        <text class="tag">{{item.type}}</text>
+        <view class="detail-status">
+          <text class="{{item.statusClass}}">{{item.statusText}}</text>
+          <text class="detail-link">查看解析 ></text>
+        </view>
+      </view>
+      <view class="question">{{index + 1}}. {{item.question}}</view>
+      <view class="subtle">你的答案：{{item.selected || '未答'}}　正确答案：{{item.answer}}</view>
+    </view>
+  </view>
+
+  <view class="card empty" wx:else>暂无考试结果</view>
+  <button class="primary" bindtap="backHome">返回首页</button>
+</view>

@@ -1,0 +1,45 @@
+{
+  "description": "电力考试刷题小程序正式版",
+  "projectname": "sgcc-exam-miniapp",
+  "setting": {
+    "compileHotReLoad": true,
+    "urlCheck": false,
+    "es6": true,
+    "minified": false,
+    "postcss": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "appid": "wx60a4633d8d479296",
+  "miniprogramRoot": "./",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "data/ai_explanations.js",
+        "type": "file"
+      }
+    ],
+    "include": []
+  },
+  "editorSetting": {},
+  "libVersion": "3.16.1"
+}

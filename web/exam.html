@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>模拟考试</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>模拟考试</h1>
+          <span id="examScope">请从首页进入模拟考试</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <div class="quiz-layout">
+        <article class="panel quiz-card">
+          <div class="question-meta">
+            <span class="tag">题号 <span id="questionNumber">-</span></span>
+            <span class="tag">题型 <span id="questionType">-</span></span>
+            <span class="tag">剩余时间 <span id="timeLeft">-</span></span>
+          </div>
+
+          <h2 id="questionText" class="question-title"></h2>
+          <form id="answerForm">
+            <div id="options" class="options"></div>
+            <div class="toolbar">
+              <button id="prevButton" type="button">上一题</button>
+              <button id="nextButton" type="button">下一题</button>
+              <button id="submitExamButton" class="primary" type="button">交卷</button>
+            </div>
+          </form>
+        </article>
+
+        <aside class="panel side-panel">
+          <h2>考试进度</h2>
+          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+          <div class="summary-list">
+            <div class="summary-row"><span>总题数</span><strong id="totalCount">0</strong></div>
+            <div class="summary-row"><span>已答题数</span><strong id="answeredCount">0</strong></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/exam-common.js"></script>
+    <script src="js/exam.js"></script>
+  </body>
+</html>

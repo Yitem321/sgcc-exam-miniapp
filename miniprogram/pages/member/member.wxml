@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="page-head">
+    <view>
+      <view class="page-title">免费版说明</view>
+      <view class="subtle">当前版本主打免费刷题和学习记录</view>
+    </view>
+    <view class="pill">免费审核</view>
+  </view>
+
+  <view class="member-hero">
+    <view class="hero-title">当前版本已隐藏收费入口</view>
+    <view class="hero-subtitle">错题强化免费开放；题目解析每位用户可免费体验 3 次，体验用完后再提示联系人工客服。</view>
+    <view class="benefit-grid">
+      <view class="benefit-item"><text></text>顺序练习</view>
+      <view class="benefit-item"><text></text>随机练习</view>
+      <view class="benefit-item"><text></text>模拟考试</view>
+      <view class="benefit-item"><text></text>错题强化</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">当前规则</view>
+    <view class="row-subtitle">题目解析保留 3 次免费体验；未用完前不展示客服入口。</view>
+    <view class="row-subtitle">错题强化可直接使用，不需要开通会员或付费。</view>
+    <button class="secondary contact-button" bindtap="goQuiz">返回继续刷题</button>
+  </view>
+</view>

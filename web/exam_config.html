@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>模拟考试配置</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>模拟考试配置</h1>
+          <span>自定义抽题数量和考试时间</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="wrong.html">错题本</a>
+          <a href="favorites.html">收藏</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <div id="activeExamBox" class="notice action-notice">
+        <span>检测到未完成考试。</span>
+        <button id="continueExamButton" class="primary" type="button">继续上次考试</button>
+        <button id="restartExamButton" type="button">重新开始考试</button>
+      </div>
+
+      <div class="home-grid">
+        <form id="configForm" class="panel" autocomplete="off">
+          <section class="section">
+            <h2>当前题库</h2>
+            <div class="summary-list">
+              <div class="summary-row"><span>专业</span><strong id="majorText">-</strong></div>
+              <div class="summary-row"><span>等级</span><strong id="levelText">-</strong></div>
+              <div class="summary-row"><span>当前题库总题数</span><strong id="totalCount">0</strong></div>
+              <div class="summary-row compact"><span>单选题数量</span><strong id="singleAvailable">0</strong></div>
+              <div class="summary-row compact"><span>多选题数量</span><strong id="multiAvailable">0</strong></div>
+              <div class="summary-row compact"><span>判断题数量</span><strong id="judgeAvailable">0</strong></div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>组卷设置</h2>
+            <div class="form-grid">
+              <label class="field">
+                <span>单选题抽取数量</span>
+                <input id="singleCount" type="number" min="0" step="1" value="30">
+                <small id="singleCountHint">计划抽取 30 / 可用 0</small>
+              </label>
+              <label class="field">
+                <span>多选题抽取数量</span>
+                <input id="multiCount" type="number" min="0" step="1" value="20">
+                <small id="multiCountHint">计划抽取 20 / 可用 0</small>
+              </label>
+              <label class="field">
+                <span>判断题抽取数量</span>
+                <input id="judgeCount" type="number" min="0" step="1" value="20">
+                <small id="judgeCountHint">计划抽取 20 / 可用 0</small>
+              </label>
+              <label class="field">
+                <span>考试时间（分钟）</span>
+                <input id="durationMinutes" type="number" min="1" step="1" value="60">
+              </label>
+            </div>
+            <div id="validationBox" class="validation-box" aria-live="polite"></div>
+          </section>
+
+          <section class="section toolbar">
+            <button id="startExamButton" class="primary" type="submit">开始考试</button>
+            <button id="clearProgressButton" type="button">清空未完成考试</button>
+          </section>
+        </form>
+
+        <aside class="panel section">
+          <h2>说明</h2>
+          <div class="summary-list">
+            <div class="summary-row"><span>单选题默认</span><strong>30</strong></div>
+            <div class="summary-row"><span>多选题默认</span><strong>20</strong></div>
+            <div class="summary-row"><span>判断题默认</span><strong>20</strong></div>
+            <div class="summary-row"><span>考试时间默认</span><strong>60分钟</strong></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/exam-common.js"></script>
+    <script src="js/exam-config.js"></script>
+  </body>
+</html>

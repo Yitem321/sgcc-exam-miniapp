@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>本地刷题系统</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>本地刷题系统</h1>
+          <span>纯 HTML/CSS/JavaScript，离线运行</span>
+        </div>
+        <nav class="nav" aria-label="页面导航">
+          <a href="index.html">首页</a>
+          <a href="wrong.html">错题本</a>
+          <a href="favorites.html">收藏</a>
+          <a href="stats.html">统计</a>
+        </nav>
+      </header>
+
+      <div id="loadNotice" class="notice">正在加载题库...</div>
+
+      <div class="home-grid">
+        <form id="startForm" class="panel" autocomplete="off">
+          <section class="section">
+            <h2>选择专业</h2>
+            <div id="majorList" class="choice-grid"></div>
+          </section>
+
+          <section class="section">
+            <h2>选择等级</h2>
+            <div id="levelList" class="choice-grid"></div>
+          </section>
+
+          <section class="section">
+            <h2>刷题模式</h2>
+            <div id="modeList" class="choice-grid">
+              <label class="choice">
+                <input type="radio" name="mode" value="sequential" checked>
+                <span>顺序刷题</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="mode" value="random">
+                <span>随机刷题</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="mode" value="wrong">
+                <span>错题重练</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="mode" value="favorites">
+                <span>收藏练习</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="section">
+            <button id="startButton" class="primary" type="submit">开始刷题</button>
+            <button id="examButton" type="button">模拟考试</button>
+          </section>
+        </form>
+
+        <aside class="panel section">
+          <h2>当前题库</h2>
+          <div class="summary-list">
+            <div class="summary-row"><span>总题数</span><strong id="totalCount">0</strong></div>
+            <div class="type-counts" id="typeCounts"></div>
+            <div class="summary-row"><span>已做题数</span><strong id="doneCount">0</strong></div>
+            <div class="summary-row"><span>正确率</span><strong id="accuracy">0%</strong></div>
+            <div class="summary-row"><span>错题数</span><strong id="wrongCount">0</strong></div>
+            <div class="summary-row"><span>收藏数</span><strong id="favoriteCount">0</strong></div>
+          </div>
+        </aside>
+
+        <aside class="panel section">
+          <h2>会员状态</h2>
+          <div class="summary-list">
+            <div class="summary-row"><span>当前身份</span><strong id="vipStatus">免费用户</strong></div>
+            <div class="summary-row"><span>免费解析剩余次数</span><strong id="freeAnalysisRemaining">5</strong></div>
+            <div class="summary-row"><span>已查看解析数量</span><strong id="viewedAnalysisCount">0</strong></div>
+          </div>
+          <div class="toolbar">
+            <button id="mockVipButton" type="button">模拟开通VIP</button>
+            <button id="resetAnalysisAccessButton" type="button">重置体验状态</button>
+            <span class="muted">开发测试用</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script src="js/questions-data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

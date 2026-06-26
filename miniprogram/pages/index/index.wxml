@@ -1,0 +1,158 @@
+<view class="page home-page">
+  <view class="page-head home-head">
+    <view>
+      <view class="page-title">电力考试刷题</view>
+      <view class="dataset-subtitle">{{datasetTitle || '正在加载题库'}}</view>
+    </view>
+    <view class="mine-entry {{entitlement.isMember ? 'mine-entry-vip' : 'mine-entry-free'}}" bindtap="goMine">
+      <view class="crown-icon">我</view>
+      <text>我的</text>
+    </view>
+  </view>
+
+  <view class="home-hero">
+    <view class="hero-kicker">今日建议</view>
+    <view class="hero-title">先刷 {{checkin.goal.target || 20}} 题，巩固薄弱题型</view>
+    <view class="hero-subtitle">免费刷题，无需登录。登录仅用于保存学习记录。</view>
+    <button class="primary start-button" bindtap="goQuiz">立即开始刷题</button>
+  </view>
+
+  <view class="home-stats">
+    <view class="stat-tile">
+      <text>{{stats.done || 0}}</text>
+      <text>已做题</text>
+    </view>
+    <view class="stat-tile">
+      <text>{{accuracyRate || 0}}%</text>
+      <text>正确率</text>
+    </view>
+    <view class="stat-tile">
+      <text>{{streakDays || 0}}</text>
+      <text>学习天数</text>
+    </view>
+  </view>
+
+  <view class="card checkin-card" bindtap="goCheckin">
+    <view class="section-head">
+      <view>
+        <view class="section-title">今日打卡</view>
+        <view class="row-subtitle">已刷 {{checkin.todayDone || 0}} / {{checkin.goal.target || 20}} 题，连续 {{checkin.streakDays || 0}} 天</view>
+      </view>
+      <view class="pill">{{checkin.checkedToday ? '已打卡' : '去打卡'}}</view>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{checkin.todayDone * 100 / checkin.goal.target}}%;"></view>
+    </view>
+  </view>
+
+  <view class="quick-grid">
+    <view class="quick-action" bindtap="goQuiz">
+      <view class="quick-icon"></view>
+      <view>
+        <view class="quick-title">顺序练习</view>
+        <view class="quick-sub">打开即刷</view>
+      </view>
+    </view>
+    <view class="quick-action" bindtap="goRandom">
+      <view class="quick-icon"></view>
+      <view>
+        <view class="quick-title">随机练习</view>
+        <view class="quick-sub">快速测弱项</view>
+      </view>
+    </view>
+    <view class="quick-action" bindtap="goExam">
+      <view class="quick-icon"></view>
+      <view>
+        <view class="quick-title">模拟考试</view>
+        <view class="quick-sub">考前冲刺</view>
+      </view>
+    </view>
+    <view class="quick-action" bindtap="goWrong">
+      <view class="quick-icon"></view>
+      <view>
+        <view class="quick-title">错题强化</view>
+        <view class="quick-sub">{{stats.wrong || 0}} 题待练</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-head">
+      <view class="section-title">当前题库</view>
+      <view class="pill" bindtap="goMajor">切换专业</view>
+    </view>
+    <view wx:if="{{catalogError}}" class="catalog-error">
+      <view>{{catalogError}}</view>
+      <view wx:if="{{catalogErrorDetail}}" class="catalog-error-detail">{{catalogErrorDetail}}</view>
+      <button class="secondary retry-button" bindtap="retryCatalog" loading="{{loading}}" disabled="{{loading}}">重新加载</button>
+    </view>
+    <view wx:else>
+      <view class="thin-row" bindtap="goMajor">
+        <view>
+          <view class="row-title">{{major}}</view>
+          <view class="row-subtitle">共 {{stats.total || 0}} 题，支持 65 个专业题库</view>
+        </view>
+        <text class="row-arrow">›</text>
+      </view>
+      <view class="thin-row">
+        <view>
+          <view class="row-title">等级</view>
+          <view class="row-subtitle">当前等级影响刷题和模拟考试范围</view>
+        </view>
+        <picker range="{{levels}}" value="{{levelIndex}}" bindchange="onLevelChange">
+          <view class="picker-value">{{level}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-head">
+      <view class="section-title">学习报告</view>
+      <view class="pill" bindtap="goStats">查看</view>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{progressRate}}%;"></view>
+    </view>
+    <view class="stats-grid">
+      <view class="metric metric-link" data-type="single" bindtap="goTypeQuiz">
+        <view>
+          <text class="metric-value">{{stats.single}}</text>
+          <text class="metric-label">单选题</text>
+          <text class="metric-start">练习</text>
+        </view>
+        <text class="metric-arrow">›</text>
+      </view>
+      <view class="metric metric-link" data-type="multiple" bindtap="goTypeQuiz">
+        <view>
+          <text class="metric-value">{{stats.multiple}}</text>
+          <text class="metric-label">多选题</text>
+          <text class="metric-start">练习</text>
+        </view>
+        <text class="metric-arrow">›</text>
+      </view>
+      <view class="metric metric-link" data-type="judge" bindtap="goTypeQuiz">
+        <view>
+          <text class="metric-value">{{stats.judge}}</text>
+          <text class="metric-label">判断题</text>
+          <text class="metric-start">练习</text>
+        </view>
+        <text class="metric-arrow">›</text>
+      </view>
+      <view class="metric">
+        <text class="metric-value">{{progressRate}}%</text>
+        <text class="metric-label">完成度</text>
+      </view>
+    </view>
+    <view class="thin-row" bindtap="goWrong"><text>错题本</text><text>{{stats.wrong}}</text></view>
+    <view class="thin-row" bindtap="goFavorites"><text>收藏夹</text><text>{{stats.favorite}}</text></view>
+  </view>
+
+  <view class="card info-card">
+    <view class="section-title">更多服务</view>
+    <view class="thin-row link-row" data-page="guide" bindtap="goInfo"><text>使用说明</text><text>查看</text></view>
+    <view class="thin-row link-row" data-page="about" bindtap="goInfo"><text>关于我们</text><text>查看</text></view>
+    <view class="thin-row link-row" data-page="privacy" bindtap="goInfo"><text>隐私说明</text><text>查看</text></view>
+    <view class="thin-row link-row" data-page="agreement" bindtap="goInfo"><text>用户协议</text><text>查看</text></view>
+  </view>
+</view>

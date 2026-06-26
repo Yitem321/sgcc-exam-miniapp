@@ -1,0 +1,97 @@
+<view class="page with-bottom-bar">
+  <block wx:if="{{question}}">
+    <view class="quiz-top">
+      <view class="row">
+        <text class="tag">{{question.question_type}}</text>
+        <text class="quiz-count">第 {{index + 1}} / {{questions.length}} 题</text>
+      </view>
+      <view class="quiz-progress">
+        <view class="quiz-progress-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
+      <view class="question-title">{{question.question}}</view>
+    </view>
+
+    <view class="card option-card">
+      <view class="option" wx:for="{{optionList}}" wx:key="key" data-key="{{item.key}}" bindtap="onOptionTap">
+        <view class="option-indicator {{item.checked ? 'option-indicator-active' : ''}}">
+          <text wx:if="{{item.checked}}" class="option-indicator-check">✓</text>
+        </view>
+        <view class="option-body">
+          <text class="option-key">{{item.key}}</text>
+          <text>{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="{{resultClass}}" wx:if="{{submitted}}">
+      <view class="section-title">{{resultTitle}}</view>
+      <view>正确答案：{{answerText}}</view>
+    </view>
+
+    <view class="card explanation-card" wx:if="{{explanation}}">
+      <view class="section-title">题目解析</view>
+      <view class="explanation">{{explanation}}</view>
+    </view>
+
+    <view class="analysis-status">
+      <view>
+        <view class="analysis-status-title">{{entitlement.memberLabel}}</view>
+        <view class="analysis-status-subtitle">{{entitlement.memberSubtitle}}</view>
+      </view>
+      <view class="analysis-credit">{{entitlement.trialBadge}}</view>
+    </view>
+
+    <view class="tool-grid">
+      <button class="secondary" bindtap="showExplanation" loading="{{explaining}}" disabled="{{explaining}}">{{explanation ? '已生成解析' : '题目解析'}}</button>
+      <button class="secondary" bindtap="toggleWrong">{{wrongButtonText}}</button>
+      <button class="secondary" bindtap="toggleFavorite">{{favoriteButtonText}}</button>
+    </view>
+
+    <view class="submit-panel">
+      <button wx:if="{{!submitted}}" class="primary submit-button" bindtap="submitAnswer">提交答案</button>
+      <button wx:else class="primary submit-button" bindtap="nextQuestion">下一题</button>
+    </view>
+
+    <view class="bottom-bar quiz-bottom-bar">
+      <button class="secondary" bindtap="backHome">返回首页</button>
+      <button class="secondary" bindtap="openQuestionNavigator">题目导航</button>
+    </view>
+
+    <view wx:if="{{navigatorVisible}}" class="nav-mask" catchtap="closeQuestionNavigator">
+      <view class="nav-panel" catchtap="noop">
+        <view class="nav-header">
+          <view class="nav-title">题目导航</view>
+          <view class="nav-legend">
+            <view class="nav-legend-item">
+              <view class="nav-legend-dot nav-legend-dot-wrong"></view>
+              <text>最近错</text>
+            </view>
+            <view class="nav-legend-item">
+              <view class="nav-legend-dot nav-legend-dot-reinforce"></view>
+              <text>待巩固</text>
+            </view>
+            <view class="nav-legend-item">
+              <view class="nav-legend-dot nav-legend-dot-done"></view>
+              <text>已掌握</text>
+            </view>
+            <view class="nav-legend-item">
+              <view class="nav-legend-dot nav-legend-dot-empty"></view>
+              <text>未做</text>
+            </view>
+          </view>
+        </view>
+        <scroll-view class="nav-scroll" scroll-y="true">
+          <view wx:for="{{navigatorSections}}" wx:key="title" class="nav-section">
+            <view class="nav-section-head">{{item.title}} · {{item.doneCount}} / {{item.totalCount}}</view>
+            <view class="nav-grid">
+              <view wx:for="{{item.items}}" wx:for-item="cell" wx:key="id" class="nav-item {{cell.wrong ? 'nav-item-wrong' : (cell.reinforce ? 'nav-item-reinforce' : (cell.mastered ? 'nav-item-done' : 'nav-item-empty'))}} {{cell.isCurrent ? 'nav-item-current' : ''}}" data-index="{{cell.index}}" bindtap="jumpToQuestion">
+                <text class="nav-item-number">{{cell.no}}</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </block>
+  <view class="card empty" wx:elif="{{!loading}}">暂无可练习题目</view>
+</view>

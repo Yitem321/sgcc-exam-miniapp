@@ -1,0 +1,10 @@
+.info-page {
+  padding-top: 24rpx;
+}
+
+.paragraph {
+  color: #475569;
+  font-size: 28rpx;
+  line-height: 1.8;
+  margin-top: 18rpx;
+}

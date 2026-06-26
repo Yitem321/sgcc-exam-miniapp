@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>电力考试刷题小程序 UI 原型</title>
+  <style>
+    :root {
+      --primary: #00A86B;
+      --primary-dark: #07865A;
+      --bg: #F5F7FA;
+      --panel: #FFFFFF;
+      --text: #1F2937;
+      --muted: #667085;
+      --line: #E5E7EB;
+      --success: #52C41A;
+      --warning: #FAAD14;
+      --danger: #FF4D4F;
+      --soft-green: #EAF8F2;
+      --soft-yellow: #FFF7E6;
+      --shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #EEF2F5;
+    }
+
+    button {
+      min-height: 44px;
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .workspace {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 28px;
+      padding: 28px;
+    }
+
+    .phone-wrap {
+      position: sticky;
+      top: 28px;
+      align-self: start;
+    }
+
+    .phone {
+      width: 390px;
+      height: 844px;
+      overflow: hidden;
+      border: 10px solid #111827;
+      border-radius: 42px;
+      background: var(--bg);
+      box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22);
+    }
+
+    .status {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      color: #0F172A;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--panel);
+    }
+
+    .app {
+      height: 790px;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg);
+    }
+
+    .screen {
+      display: none;
+      height: 100%;
+      overflow-y: auto;
+      padding: 16px 16px 88px;
+    }
+
+    .screen.active { display: block; }
+
+    .nav-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .nav-title h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .caption {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--soft-green);
+    }
+
+    .card {
+      margin-bottom: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+    }
+
+    .hero {
+      padding: 18px;
+      color: white;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), #31B986);
+      box-shadow: var(--shadow);
+    }
+
+    .hero h2 {
+      margin: 8px 0 6px;
+      font-size: 24px;
+    }
+
+    .hero .sub { color: rgba(255,255,255,0.86); font-size: 13px; }
+
+    .primary {
+      width: 100%;
+      border-radius: 12px;
+      color: white;
+      font-weight: 800;
+      background: var(--primary);
+    }
+
+    .secondary {
+      width: 100%;
+      border-radius: 12px;
+      color: var(--primary-dark);
+      font-weight: 800;
+      background: var(--soft-green);
+    }
+
+    .ghost {
+      border-radius: 10px;
+      color: var(--text);
+      font-weight: 700;
+      background: #F3F4F6;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .quick {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 76px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .icon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--soft-green);
+      position: relative;
+    }
+
+    .icon:before {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 3px solid var(--primary);
+      border-top-color: transparent;
+      border-radius: 50%;
+    }
+
+    .quick-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .quick-sub {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .stat {
+      padding: 12px 8px;
+      border-radius: 12px;
+      background: #F8FAFB;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 19px;
+      color: #111827;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .bottom-tab {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      height: 70px;
+      padding: 8px 6px 10px;
+      border-top: 1px solid var(--line);
+      background: rgba(255,255,255,0.96);
+    }
+
+    .tab {
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tab.active { color: var(--primary-dark); background: var(--soft-green); }
+
+    .list-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 62px;
+      padding: 12px 0;
+      border-bottom: 1px solid #EEF0F2;
+    }
+
+    .list-row:last-child { border-bottom: 0; }
+
+    .row-main strong { display: block; font-size: 15px; }
+    .row-main span { color: var(--muted); font-size: 12px; }
+
+    .search {
+      width: 100%;
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: white;
+      font-size: 14px;
+    }
+
+    .question-card {
+      padding: 18px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .progress {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #E5E7EB;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 38%;
+      border-radius: inherit;
+      background: var(--primary);
+    }
+
+    .option {
+      display: flex;
+      gap: 10px;
+      padding: 13px 0;
+      border-bottom: 1px solid #EEF0F2;
+      line-height: 1.5;
+    }
+
+    .option b {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      color: var(--primary-dark);
+      background: var(--soft-green);
+    }
+
+    .answer {
+      border-left: 4px solid var(--success);
+      background: #F6FFED;
+    }
+
+    .ai-card {
+      border-left: 4px solid var(--primary);
+      background: #F8FFFC;
+    }
+
+    .plan {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .plan.hot {
+      border-color: var(--primary);
+      background: var(--soft-green);
+    }
+
+    .price {
+      color: var(--primary-dark);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .report-line {
+      display: grid;
+      grid-template-columns: 70px 1fr 44px;
+      gap: 10px;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 13px;
+    }
+
+    .bar {
+      height: 9px;
+      border-radius: 999px;
+      background: #E5E7EB;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--primary);
+    }
+
+    .side {
+      padding: 22px;
+      border-radius: 18px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .side h2 { margin: 0 0 8px; }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .menu button {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      text-align: left;
+      background: #FAFBFC;
+      font-weight: 800;
+    }
+
+    .menu button.active {
+      color: var(--primary-dark);
+      border-color: var(--primary);
+      background: var(--soft-green);
+    }
+
+    .principles {
+      margin-top: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .principles div {
+      padding: 14px;
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      background: #FAFBFC;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 900px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+      .phone-wrap { position: static; }
+      .phone { width: min(390px, 100%); margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="workspace">
+    <section class="phone-wrap">
+      <div class="phone" aria-label="微信小程序手机预览">
+        <div class="status"><span>9:41</span><span>电力考试刷题</span><span>100%</span></div>
+        <div class="app">
+          <section class="screen active" data-screen="home">
+            <div class="nav-title">
+              <div>
+                <h1>电力考试刷题</h1>
+                <div class="caption">通信运维检修工 / 初级工</div>
+              </div>
+              <span class="pill">连续 6 天</span>
+            </div>
+            <div class="hero">
+              <div class="sub">今日建议</div>
+              <h2>先刷 20 题，巩固薄弱题型</h2>
+              <button class="primary" data-nav="quiz">立即开始刷题</button>
+            </div>
+            <div class="card">
+              <div class="stats">
+                <div class="stat"><strong>128</strong><span>今日刷题</span></div>
+                <div class="stat"><strong>82%</strong><span>正确率</span></div>
+                <div class="stat"><strong>34</strong><span>待强化</span></div>
+              </div>
+            </div>
+            <div class="grid2">
+              <div class="quick" data-nav="quiz"><span class="icon"></span><div><div class="quick-title">顺序练习</div><div class="quick-sub">打开即刷</div></div></div>
+              <div class="quick" data-nav="special"><span class="icon"></span><div><div class="quick-title">专项练习</div><div class="quick-sub">按题型突破</div></div></div>
+              <div class="quick" data-nav="exam"><span class="icon"></span><div><div class="quick-title">模拟考试</div><div class="quick-sub">考前冲刺</div></div></div>
+              <div class="quick" data-nav="wrong"><span class="icon"></span><div><div class="quick-title">错题本</div><div class="quick-sub">高频错题</div></div></div>
+            </div>
+            <div class="card">
+              <div class="list-row" data-nav="stats"><div class="row-main"><strong>学习报告</strong><span>正确率、掌握度、练习记录</span></div><span class="pill">查看</span></div>
+              <div class="list-row" data-nav="major"><div class="row-main"><strong>切换专业</strong><span>65 个专业题库可选</span></div><span class="pill">切换</span></div>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="major">
+            <div class="nav-title"><h1>选择专业</h1><span class="pill">65 个题库</span></div>
+            <input class="search" value="通信" aria-label="搜索专业">
+            <div class="card">
+              <div class="list-row"><div class="row-main"><strong>通信运维检修工</strong><span>3684 题 / 高级工、技师、中级工</span></div><span class="pill">当前</span></div>
+              <div class="list-row"><div class="row-main"><strong>信息运维检修工</strong><span>3684 题 / 5 个等级</span></div></div>
+              <div class="list-row"><div class="row-main"><strong>电网调度自动化维护员</strong><span>专业题库 / 高频考试</span></div></div>
+            </div>
+            <button class="primary" data-nav="home">确认并开始刷题</button>
+          </section>
+
+          <section class="screen" data-screen="quiz">
+            <div class="nav-title"><h1>顺序练习</h1><span class="pill">第 12 / 799 题</span></div>
+            <div class="progress"><span></span></div>
+            <div class="question-card" style="margin-top:14px;">
+              <span class="pill">单选题</span>
+              <h2 style="font-size:18px;line-height:1.55;">在电力通信运维中，设备远程登录常用的安全协议是？</h2>
+              <div class="option"><b>A</b><span>Telnet</span></div>
+              <div class="option"><b>B</b><span>SSH</span></div>
+              <div class="option"><b>C</b><span>FTP</span></div>
+              <div class="option"><b>D</b><span>HTTP</span></div>
+            </div>
+            <div class="grid2" style="margin-top:12px;">
+              <button class="primary">提交答案</button>
+              <button class="secondary" data-nav="ai">AI解析</button>
+              <button class="ghost">加入错题</button>
+              <button class="ghost" data-nav="favorite">收藏</button>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="ai">
+            <div class="nav-title"><h1>AI解析</h1><span class="pill">已开通</span></div>
+            <div class="card answer">
+              <strong>正确答案：B</strong>
+              <div class="caption">SSH 基于 TCP 提供加密远程登录，适合设备管理场景。</div>
+            </div>
+            <div class="card ai-card">
+              <strong>题目考点</strong>
+              <p>通信设备远程运维协议识别。</p>
+              <strong>为什么选这个</strong>
+              <p>SSH 提供身份认证和传输加密，比 Telnet 更符合生产网络安全要求。</p>
+              <strong>现场理解</strong>
+              <p>变电站通信设备远程维护时，应优先使用 SSH，避免明文口令暴露。</p>
+              <strong>记忆口诀</strong>
+              <p>远程安全连，SSH 走前面。</p>
+            </div>
+            <button class="secondary" data-nav="member">查看解析权益</button>
+          </section>
+
+          <section class="screen" data-screen="wrong">
+            <div class="nav-title"><h1>错题本</h1><span class="pill">34 题</span></div>
+            <div class="grid2" style="margin-bottom:12px;">
+              <button class="primary" data-nav="quiz">错题强化</button>
+              <button class="secondary">只看未掌握</button>
+            </div>
+            <div class="card">
+              <div class="list-row"><div class="row-main"><strong>SSH 协议传输层基础</strong><span>错 3 次 / 最近昨天</span></div><span class="pill">高频</span></div>
+              <div class="list-row"><div class="row-main"><strong>VLAN 间通信方式</strong><span>错 2 次 / 判断题</span></div></div>
+              <div class="list-row"><div class="row-main"><strong>光功率 dBm 含义</strong><span>错 1 次 / 判断题</span></div></div>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="favorite">
+            <div class="nav-title"><h1>收藏夹</h1><span class="pill">18 题</span></div>
+            <div class="card">
+              <div class="list-row"><div class="row-main"><strong>通信协议基础</strong><span>单选题 / 已收藏</span></div><button class="ghost">练习</button></div>
+              <div class="list-row"><div class="row-main"><strong>同步时钟告警处理</strong><span>判断题 / 重点记忆</span></div><button class="ghost">练习</button></div>
+              <div class="list-row"><div class="row-main"><strong>光纤连接器损耗</strong><span>判断题 / 易混淆</span></div><button class="ghost">练习</button></div>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="exam">
+            <div class="nav-title"><h1>模拟考试</h1><span class="pill">考前模式</span></div>
+            <div class="card">
+              <div class="list-row"><div class="row-main"><strong>标准模拟卷</strong><span>100 题 / 90 分钟</span></div></div>
+              <div class="list-row"><div class="row-main"><strong>快速测评</strong><span>30 题 / 20 分钟</span></div></div>
+              <div class="list-row"><div class="row-main"><strong>错题回炉卷</strong><span>按未掌握错题组卷</span></div></div>
+            </div>
+            <button class="primary">开始模拟考试</button>
+          </section>
+
+          <section class="screen" data-screen="stats">
+            <div class="nav-title"><h1>学习统计</h1><span class="pill">本周</span></div>
+            <div class="card">
+              <div class="stats">
+                <div class="stat"><strong>642</strong><span>累计刷题</span></div>
+                <div class="stat"><strong>78%</strong><span>总正确率</span></div>
+                <div class="stat"><strong>6</strong><span>连续天数</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <strong>专业掌握度</strong>
+              <div class="report-line"><span>单选题</span><div class="bar"><span style="width:82%"></span></div><b>82%</b></div>
+              <div class="report-line"><span>多选题</span><div class="bar"><span style="width:64%"></span></div><b>64%</b></div>
+              <div class="report-line"><span>判断题</span><div class="bar"><span style="width:76%"></span></div><b>76%</b></div>
+            </div>
+            <div class="card">
+              <strong>薄弱建议</strong>
+              <p class="caption">多选题正确率偏低，建议先完成 30 道专项练习，再进入模拟考试。</p>
+            </div>
+          </section>
+
+          <section class="screen" data-screen="member">
+            <div class="nav-title"><h1>AI解析权益</h1><span class="pill">按需开通</span></div>
+            <div class="card">
+              <p class="caption">免费刷题不受影响。只有查看 AI解析且次数不足时，才出现会员转化。</p>
+            </div>
+            <div class="plan"><div><strong>7天无限解析</strong><div class="caption">考前短冲</div></div><div class="price">¥9.9</div></div>
+            <div class="plan hot" style="margin-top:10px;"><div><strong>30天无限解析</strong><div class="caption">系统复习推荐</div></div><div class="price">¥19.9</div></div>
+            <div class="plan" style="margin-top:10px;"><div><strong>90天无限解析</strong><div class="caption">长期备考</div></div><div class="price">¥39.9</div></div>
+          </section>
+
+          <section class="screen" data-screen="mine">
+            <div class="nav-title"><h1>我的</h1><span class="pill">未登录</span></div>
+            <div class="card">
+              <strong>免费刷题，无需登录</strong>
+              <p class="caption">登录仅用于保存学习记录，后台只获取 OpenID。</p>
+              <button class="primary">微信一键登录</button>
+            </div>
+            <div class="card">
+              <div class="list-row"><div class="row-main"><strong>学习记录同步</strong><span>登录后开启</span></div></div>
+              <div class="list-row"><div class="row-main"><strong>AI解析权益</strong><span>未开通</span></div></div>
+              <div class="list-row"><div class="row-main"><strong>隐私说明</strong><span>OpenID、学习记录用途</span></div></div>
+            </div>
+          </section>
+
+          <div class="bottom-tab">
+            <button class="tab active" data-nav="home">首页</button>
+            <button class="tab" data-nav="stats">统计</button>
+            <button class="tab" data-nav="member">AI解析</button>
+            <button class="tab" data-nav="mine">我的</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <h2>电力考试刷题 UI 原型</h2>
+      <div class="caption">第四步 HTML 原型。基于“打开即刷题”的增长路径，弱化首页硬广告，把会员转化放在 AI解析权益不足时触发。</div>
+      <div class="menu">
+        <button class="active" data-nav="home">首页</button>
+        <button data-nav="major">专业选择</button>
+        <button data-nav="quiz">刷题页</button>
+        <button data-nav="ai">AI解析</button>
+        <button data-nav="wrong">错题本</button>
+        <button data-nav="favorite">收藏夹</button>
+        <button data-nav="exam">模拟考试</button>
+        <button data-nav="stats">学习统计</button>
+        <button data-nav="member">会员中心</button>
+        <button data-nav="mine">我的</button>
+      </div>
+      <div class="principles">
+        <div><strong>70% 驾考宝典：</strong>首页强入口、顺序练习、模拟考试、错题本、收藏夹和低成本刷题链路。</div>
+        <div><strong>20% 粉笔教育：</strong>正确率、掌握度、练习记录和薄弱建议，提供成长感。</div>
+        <div><strong>10% 墨墨背单词：</strong>连续学习天数、打卡反馈和轻量激励，提高留存。</div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const screens = Array.from(document.querySelectorAll(".screen"));
+    const navs = Array.from(document.querySelectorAll("[data-nav]"));
+    const tabs = Array.from(document.querySelectorAll(".tab"));
+    const menuButtons = Array.from(document.querySelectorAll(".menu button"));
+
+    function showScreen(name) {
+      screens.forEach((screen) => screen.classList.toggle("active", screen.dataset.screen === name));
+      tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.nav === name));
+      menuButtons.forEach((button) => button.classList.toggle("active", button.dataset.nav === name));
+    }
+
+    navs.forEach((item) => {
+      item.addEventListener("click", () => showScreen(item.dataset.nav));
+    });
+  </script>
+</body>
+</html>
