@@ -4,6 +4,15 @@ const config = require("../../utils/config.js");
 const userService = require("../../utils/user-service.js");
 const learningState = require("../../utils/learning-state.js");
 
+const UI_TEXT = {
+  answerRight: "\u56de\u7b54\u6b63\u786e",
+  answerWrong: "\u56de\u7b54\u9519\u8bef",
+  addWrong: "\u52a0\u5165\u9519\u9898\u672c",
+  wrongAdded: "\u9519\u9898\u5de9\u56fa\u4e2d",
+  addFavorite: "\u52a0\u5165\u6536\u85cf",
+  removeFavorite: "\u53d6\u6d88\u6536\u85cf"
+};
+
 function normalizeAnswer(value) {
   const text = Array.isArray(value) ? value.join("") : String(value || "");
   return text.toUpperCase().replace(/[，、；;\s,]/g, "").split("").sort().join("");
@@ -47,8 +56,8 @@ Page({
     explanation: "",
     explaining: false,
     entitlement: membership.getEntitlement(),
-    wrongButtonText: "加入错题本",
-    favoriteButtonText: "加入收藏",
+    wrongButtonText: UI_TEXT.addWrong,
+    favoriteButtonText: UI_TEXT.addFavorite,
     navigatorVisible: false,
     navigatorSections: [],
     reviewMap: {},
@@ -162,11 +171,11 @@ Page({
       isFavorite,
       isWrong,
       resultClass: review ? (review.correct ? "result-card result-right" : "result-card result-wrong") : "result-card",
-      resultTitle: review ? (review.correct ? "回答正确" : "回答错误") : "",
+      resultTitle: review ? (review.correct ? UI_TEXT.answerRight : UI_TEXT.answerWrong) : "",
       explanation: "",
       explaining: false,
-      wrongButtonText: isWrong ? "错题巩固中" : "加入错题本",
-      favoriteButtonText: isFavorite ? "取消收藏" : "加入收藏"
+      wrongButtonText: isWrong ? UI_TEXT.wrongAdded : UI_TEXT.addWrong,
+      favoriteButtonText: isFavorite ? UI_TEXT.removeFavorite : UI_TEXT.addFavorite
     });
     this.refreshEntitlement();
     this.refreshNavigator();
@@ -224,10 +233,10 @@ Page({
       submitted: true,
       correct,
       resultClass: correct ? "result-card result-right" : "result-card result-wrong",
-      resultTitle: correct ? "回答正确" : "回答错误",
+      resultTitle: correct ? UI_TEXT.answerRight : UI_TEXT.answerWrong,
       answerText: question.answer,
       isWrong,
-      wrongButtonText: isWrong ? "错题巩固中" : "加入错题本",
+      wrongButtonText: isWrong ? UI_TEXT.wrongAdded : UI_TEXT.addWrong,
       masteryScore: state ? state.masteryScore : 0
     });
     this.refreshNavigator();
@@ -375,14 +384,14 @@ Page({
       wx.setStorageSync("wrongIds", ids);
       this.setData({
         isWrong: false,
-        wrongButtonText: "加入错题本"
+        wrongButtonText: UI_TEXT.addWrong
       });
       return;
     }
     learningState.forceAddWrong(question);
     this.setData({
       isWrong: true,
-      wrongButtonText: "错题巩固中"
+      wrongButtonText: UI_TEXT.wrongAdded
     });
     this.refreshNavigator();
   },
@@ -392,7 +401,7 @@ Page({
     setCollection("favoriteIds", this.data.question.id, enabled);
     this.setData({
       isFavorite: enabled,
-      favoriteButtonText: enabled ? "取消收藏" : "加入收藏"
+      favoriteButtonText: enabled ? UI_TEXT.removeFavorite : UI_TEXT.addFavorite
     });
   },
 
