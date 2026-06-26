@@ -1,0 +1,82 @@
+name: Flutter App CI
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "flutter_app/**"
+      - ".github/workflows/flutter-app.yml"
+  pull_request:
+    paths:
+      - "flutter_app/**"
+      - ".github/workflows/flutter-app.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze-and-test:
+    name: Analyze and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: flutter_app
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: flutter_app
+        run: flutter analyze
+
+      - name: Test
+        working-directory: flutter_app
+        run: flutter test
+
+  build-windows-debug:
+    name: Build Windows Debug
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      actions: write
+    needs: analyze-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.2"
+          channel: stable
+          cache: true
+
+      - name: Enable Windows desktop
+        working-directory: flutter_app
+        run: flutter config --enable-windows-desktop
+
+      - name: Install dependencies
+        working-directory: flutter_app
+        run: flutter pub get
+
+      - name: Build Windows debug package
+        working-directory: flutter_app
+        run: flutter build windows --debug
+
+      - name: Upload Windows debug artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgcc-exam-app-windows-debug
+          path: flutter_app/build/windows/x64/runner/Debug/
+          if-no-files-found: error

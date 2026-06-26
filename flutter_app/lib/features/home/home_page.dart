@@ -139,12 +139,7 @@ class _HomePageState extends State<HomePage> {
                     _PracticeGrid(
                       onPractice: () => _openPractice(catalog),
                       onRandom: () => _openPractice(catalog, random: true),
-                      onExam: () => _openPractice(
-                        catalog,
-                        random: true,
-                        title: '模拟考试',
-                        limit: 20,
-                      ),
+                      onExam: () => _openExamSetup(catalog),
                       onWrong: () => AppNavigator.pushWrong(
                         context,
                         onOpenMember: widget.onOpenMember,
@@ -227,6 +222,17 @@ class _HomePageState extends State<HomePage> {
     _refreshSummary();
   }
 
+  Future<void> _openExamSetup(Catalog? catalog) async {
+    final major = _currentMajor(catalog);
+    final level = _currentLevel(major);
+    await AppNavigator.pushExamSetup(
+      context,
+      major: major?.name,
+      level: level?.name,
+    );
+    _refreshSummary();
+  }
+
   Future<void> _selectBank(QuestionMajor major, QuestionLevel level) async {
     await _localStore.setString('selected_major', major.name);
     await _localStore.setString('selected_level', level.name);
@@ -236,7 +242,6 @@ class _HomePageState extends State<HomePage> {
       _selectedLevelName = level.name;
     });
     widget.onBankChanged?.call();
-    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('已切换到：${major.name} / ${level.name}')),
     );
@@ -330,58 +335,15 @@ class _HomePageState extends State<HomePage> {
   void _showBankPicker(Catalog catalog) {
     final currentMajor = _currentMajor(catalog);
     final currentLevel = _currentLevel(currentMajor);
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.78,
-          minChildSize: 0.46,
-          maxChildSize: 0.92,
-          builder: (context, controller) {
-            return Container(
-              decoration: const BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(AppSpacing.radiusXl),
-                ),
-              ),
-              child: ListView(
-                controller: controller,
-                padding: const EdgeInsets.fromLTRB(18, 16, 18, 28),
-                children: [
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Text('切换专业题库', style: AppTextStyles.title),
-                      ),
-                      IconButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.close_rounded),
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    '选择专业和等级后，首页、刷题和模拟考试会同步使用该题库。',
-                    style: AppTextStyles.body,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  for (final major in catalog.majors)
-                    _BankMajorCard(
-                      major: major,
-                      selectedMajorName: currentMajor?.name,
-                      selectedLevelName: currentLevel?.name,
-                      onSelect: _selectBank,
-                    ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
+    AppNavigator.pushBankSelect(
+      context,
+      catalog: catalog,
+      currentMajor: currentMajor,
+      currentLevel: currentLevel,
+    ).then((selection) {
+      if (selection == null) return;
+      _selectBank(selection.major, selection.level);
+    });
   }
 }
 
@@ -789,56 +751,6 @@ class _MemberGuideCard extends StatelessWidget {
             icon: Icons.arrow_forward_rounded,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _BankMajorCard extends StatelessWidget {
-  const _BankMajorCard({
-    required this.major,
-    required this.selectedMajorName,
-    required this.selectedLevelName,
-    required this.onSelect,
-  });
-
-  final QuestionMajor major;
-  final String? selectedMajorName;
-  final String? selectedLevelName;
-  final void Function(QuestionMajor major, QuestionLevel level) onSelect;
-
-  @override
-  Widget build(BuildContext context) {
-    final isSelectedMajor = selectedMajorName == major.name;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: AppCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                    child: Text(major.name, style: AppTextStyles.subtitle)),
-                Text('${major.total} 题', style: AppTextStyles.body),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Wrap(
-              spacing: AppSpacing.xs,
-              runSpacing: AppSpacing.xs,
-              children: [
-                for (final level in major.levels)
-                  ChoiceChip(
-                    label: Text('${level.name} · ${level.total}'),
-                    selected:
-                        isSelectedMajor && selectedLevelName == level.name,
-                    onSelected: (_) => onSelect(major, level),
-                  ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

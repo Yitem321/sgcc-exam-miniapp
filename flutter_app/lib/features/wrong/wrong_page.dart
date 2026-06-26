@@ -62,7 +62,8 @@ class _WrongPageState extends State<WrongPage> {
               : data.questions.take(3).toList();
           final hiddenCount = data.membership.active
               ? 0
-              : (data.questions.length - visibleQuestions.length).clamp(0, data.questions.length);
+              : (data.questions.length - visibleQuestions.length)
+                  .clamp(0, data.questions.length);
           return RefreshIndicator(
             onRefresh: _refresh,
             child: ListView(
@@ -240,144 +241,43 @@ class _HeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.xl),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF102A43), Color(0xFF0F766E), Color(0xFF10B981)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.22),
-            blurRadius: 26,
-            offset: const Offset(0, 16),
-          ),
-        ],
-      ),
+    return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Expanded(
-                child: Text(
-                  '智能错题强化',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w900,
-                  ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('错题强化', style: AppTextStyles.display),
+                    const SizedBox(height: AppSpacing.xxs),
+                    Text(
+                      '共 $count 题，今日待复习 $dueCount，高风险遗忘 $riskCount',
+                      style: AppTextStyles.body,
+                    ),
+                  ],
                 ),
               ),
-              _MemberBadge(isMember: isMember),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          const Text(
-            '按遗忘曲线安排复习，把错题从“会做一次”推进到“稳定掌握”。',
-            style: TextStyle(color: Color(0xDFFFFFFF), height: 1.5),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Row(
-            children: [
-              Expanded(child: _HeroMetric(value: '$count', label: '错题总数')),
-              const SizedBox(width: AppSpacing.xs),
-              Expanded(child: _HeroMetric(value: '$dueCount', label: '今日待复习')),
-              const SizedBox(width: AppSpacing.xs),
-              Expanded(child: _HeroMetric(value: '$riskCount', label: '高风险遗忘')),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Row(
-            children: [
-              Expanded(
+              SizedBox(
+                width: 150,
                 child: PrimaryButton(
                   label: '开始复习',
                   icon: Icons.play_arrow_rounded,
                   onPressed: onReview,
                 ),
               ),
-              if (!isMember) ...[
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: onOpenMember,
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      side: BorderSide(color: Colors.white.withValues(alpha: 0.65)),
-                      minimumSize: const Size(0, 52),
-                    ),
-                    child: const Text('解锁完整计划'),
-                  ),
-                ),
-              ],
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MemberBadge extends StatelessWidget {
-  const _MemberBadge({required this.isMember});
-
-  final bool isMember;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: isMember
-            ? const Color(0xFFFFD166).withValues(alpha: 0.22)
-            : Colors.white.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        isMember ? '已解锁' : '会员功能',
-        style: TextStyle(
-          color: isMember ? const Color(0xFFFFD166) : Colors.white,
-          fontWeight: FontWeight.w900,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-}
-
-class _HeroMetric extends StatelessWidget {
-  const _HeroMetric({required this.value, required this.label});
-
-  final String value;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-      ),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
+          if (!isMember) ...[
+            const SizedBox(height: AppSpacing.sm),
+            OutlinedButton.icon(
+              onPressed: onOpenMember,
+              icon: const Icon(Icons.workspace_premium_outlined),
+              label: const Text('开通后解锁完整复习计划'),
             ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            label,
-            style: const TextStyle(color: Color(0xBFFFFFFF), fontSize: 12),
-          ),
+          ],
         ],
       ),
     );
@@ -392,12 +292,14 @@ class _CurveSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
+      color: const Color(0xFFFFFCF5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Expanded(child: Text('记忆曲线计划', style: AppTextStyles.subtitle)),
+              const Expanded(
+                  child: Text('错题强化', style: AppTextStyles.subtitle)),
               IconButton(
                 onPressed: () => _showCurveHelp(context),
                 icon: const Icon(Icons.help_outline_rounded),
@@ -431,6 +333,11 @@ class _CurveSummary extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          const Text(
+            '错题强化已免费开放，可直接筛选并开始复习。',
+            style: AppTextStyles.caption,
           ),
         ],
       ),
@@ -503,21 +410,105 @@ class _CurveTabs extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('复习间隔', style: AppTextStyles.subtitle),
+          Row(
+            children: [
+              const Expanded(
+                  child: Text('复习分类说明', style: AppTextStyles.subtitle)),
+              IconButton(
+                onPressed: () => _showCurveHelp(context),
+                icon: const Icon(Icons.help_outline_rounded),
+              ),
+            ],
+          ),
           const SizedBox(height: AppSpacing.sm),
+          const Row(
+            children: [
+              Expanded(
+                  child: _ColorRule(color: AppColors.danger, label: '最近答错')),
+              SizedBox(width: AppSpacing.xs),
+              Expanded(
+                  child: _ColorRule(color: AppColors.warning, label: '待巩固')),
+              SizedBox(width: AppSpacing.xs),
+              Expanded(
+                  child: _ColorRule(color: AppColors.success, label: '已掌握')),
+              SizedBox(width: AppSpacing.xs),
+              Expanded(child: _ColorRule(color: AppColors.border, label: '未做')),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: AppSpacing.xs,
             runSpacing: AppSpacing.xs,
             children: [
-              _IntervalChip(label: '今日待复习', count: plan.today.length, color: AppColors.primary),
-              _IntervalChip(label: '1天后', count: plan.oneDay.length, color: AppColors.info),
-              _IntervalChip(label: '3天后', count: plan.threeDays.length, color: AppColors.warning),
-              _IntervalChip(label: '7天后', count: plan.sevenDays.length, color: AppColors.teal),
-              _IntervalChip(label: '已掌握', count: plan.mastered.length, color: AppColors.success),
+              _IntervalChip(
+                  label: '今日待复习',
+                  count: plan.today.length,
+                  color: AppColors.primary),
+              _IntervalChip(
+                  label: '1天后',
+                  count: plan.oneDay.length,
+                  color: AppColors.info),
+              _IntervalChip(
+                  label: '3天后',
+                  count: plan.threeDays.length,
+                  color: AppColors.warning),
+              _IntervalChip(
+                  label: '7天后',
+                  count: plan.sevenDays.length,
+                  color: AppColors.teal),
+              _IntervalChip(
+                  label: '已掌握',
+                  count: plan.mastered.length,
+                  color: AppColors.success),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  void _showCurveHelp(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('复习分类说明'),
+          content: const Text(
+            '系统根据最近一次答题、连续正确次数、掌握度和下次复习时间归类：红色代表最近答错，黄色代表曾答错但仍需巩固，绿色代表连续正确达到掌握标准。',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('知道了'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ColorRule extends StatelessWidget {
+  const _ColorRule({required this.color, required this.label});
+
+  final Color color;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 4,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(999),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(label, style: AppTextStyles.caption),
+      ],
     );
   }
 }
@@ -596,7 +587,8 @@ class _WrongQuestionCard extends StatelessWidget {
                 Chip(label: Text(question.type)),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(999),
@@ -618,7 +610,8 @@ class _WrongQuestionCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               '错 ${state?.wrongCount ?? 0} 次  连续正确 ${state?.consecutiveCorrect ?? 0} 次  掌握度 ${state?.masteryScore ?? 0}',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.caption
+                  .copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.xs),
             ClipRRect(
@@ -657,7 +650,8 @@ class _LockedPreviewCard extends StatelessWidget {
             children: [
               Icon(Icons.lock_outline_rounded, color: AppColors.warning),
               SizedBox(width: AppSpacing.xs),
-              Expanded(child: Text('完整错题强化需开通会员', style: AppTextStyles.subtitle)),
+              Expanded(
+                  child: Text('完整错题强化需开通会员', style: AppTextStyles.subtitle)),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -722,7 +716,8 @@ class _StateMessage extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             Text(title, style: AppTextStyles.title),
             const SizedBox(height: AppSpacing.xs),
-            Text(message, textAlign: TextAlign.center, style: AppTextStyles.body),
+            Text(message,
+                textAlign: TextAlign.center, style: AppTextStyles.body),
           ],
         ),
       ),

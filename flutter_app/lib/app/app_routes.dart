@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../features/home/bank_detail_page.dart';
+import '../features/home/bank_select_page.dart';
+import '../features/home/exam_setup_page.dart';
 import '../features/practice/practice_page.dart';
 import '../features/questions/question_models.dart';
 import '../features/wrong/wrong_page.dart';
@@ -22,6 +24,8 @@ class AppRoutes {
   static const member = '/member';
   static const mine = '/mine';
   static const bankDetail = '/bank-detail';
+  static const bankSelect = '/bank-select';
+  static const examSetup = '/exam-setup';
   static const placeholder = '/placeholder';
 }
 
@@ -73,6 +77,40 @@ class AppNavigator {
       MaterialPageRoute<BankDetailAction>(
         settings: const RouteSettings(name: AppRoutes.bankDetail),
         builder: (_) => BankDetailPage(
+          major: major,
+          level: level,
+        ),
+      ),
+    );
+  }
+
+  static Future<BankSelection?> pushBankSelect(
+    BuildContext context, {
+    required Catalog catalog,
+    required QuestionMajor? currentMajor,
+    required QuestionLevel? currentLevel,
+  }) {
+    return Navigator.of(context).push(
+      MaterialPageRoute<BankSelection>(
+        settings: const RouteSettings(name: AppRoutes.bankSelect),
+        builder: (_) => BankSelectPage(
+          catalog: catalog,
+          currentMajor: currentMajor,
+          currentLevel: currentLevel,
+        ),
+      ),
+    );
+  }
+
+  static Future<void> pushExamSetup(
+    BuildContext context, {
+    required String? major,
+    required String? level,
+  }) {
+    return Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: AppRoutes.examSetup),
+        builder: (_) => ExamSetupPage(
           major: major,
           level: level,
         ),
