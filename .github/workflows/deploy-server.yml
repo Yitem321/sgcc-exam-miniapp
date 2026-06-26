@@ -23,6 +23,8 @@ jobs:
   deploy:
     if: ${{ github.event_name == 'push' || github.event.inputs.confirm == 'DEPLOY' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
